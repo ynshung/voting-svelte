@@ -40,23 +40,35 @@
     });
 
     const voteCandidate = (candidate: string) => {
-        const vote = httpsCallable(functions, "voteCandidate");
-        vote({ballot: $currentBallot?.id, candidate: candidate})
-            .then((result) => {
-                Swal.fire({
-                    icon: "success",
-                    title: "Success!",
-                    text: `You have voted for ${$candidates[candidate].name}!`,
-                });
-            })
-            .catch((error) => {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: `${error.message}`,
-                });
-            });
-            
+
+        // Confirm with user, show the current position and the candidate's name and image
+        Swal.fire({
+            icon: "question",
+            title: "Are you sure?",
+            html: `You are voting for <b>${$candidates[candidate].name}</b> for <b>${$currentBallot?.position_name}</b>.`,
+            showCancelButton: true,
+            confirmButtonText: "Yes, vote!",
+            cancelButtonText: "No, cancel!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const vote = httpsCallable(functions, "voteCandidate");
+                vote({ballot: $currentBallot?.id, candidate: candidate})
+                    .then((result) => {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Success!",
+                            text: `You have voted for ${$candidates[candidate].name}!`,
+                        });
+                    })
+                    .catch((error) => {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: `${error.message}`,
+                        });
+                    });
+            }
+        });     
     }
 </script>
 
