@@ -7,6 +7,7 @@
 
     onMount(() => {
         onAuthStateChanged(auth, (user) => {
+            if (!user) window.location.href = "/";
             user?.getIdTokenResult().then((idTokenResult) => {
                 if (!!!idTokenResult.claims.admin) {
                     window.location.href = "/";
