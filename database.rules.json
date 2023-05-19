@@ -1,0 +1,28 @@
+{
+  "rules": {
+  	"voters": {
+      "$uid": {
+        ".read": "auth !== null && auth.uid === $uid",
+        ".write": "auth !== null && auth.uid === $uid"
+      }
+    },
+    "ballots": {
+      ".read": "auth.token.admin === true",
+      ".write": "auth.token.admin === true",
+      "$ballot_id": {
+        "$uid": {
+          ".read": "auth !== null && auth.uid === $uid"
+        }
+      }
+    },
+		"voted": {
+      "$uid": {
+        ".read": "auth !== null && auth.uid === $uid"
+      }
+    },
+    "candidates": {
+      ".read": "auth !== null",
+      ".write": "auth.token.admin === true"
+    }
+  }
+}
