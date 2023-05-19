@@ -1,6 +1,6 @@
 <script lang="ts">
     import { db } from "../firebase";
-    import { ref, onValue, update, remove, set, push } from "firebase/database";
+    import { ref, update, remove, set, push, get } from "firebase/database";
     import { candidates } from "../stores/candidates";
     import { ballots, ballotsUID } from "../stores/ballots";
     import { currentBallot } from "../stores/currentBallot";
@@ -273,12 +273,12 @@
     }
 
     onMount(() => {
-        const cancel = onValue(ref(db, `ballots/current`), (snapshot) => {
-            if (snapshot.exists()) {
-                selectedBallot = snapshot.val().id;
-            }
-            cancel();
-        });
+        get(ref(db, `ballots/current`)).
+            then((snapshot) => {
+                if (snapshot.exists()) {
+                    selectedBallot = snapshot.val().id;
+                }
+            });
     })
 
 </script>
