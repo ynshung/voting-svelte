@@ -17,6 +17,7 @@
 
     import 'filepond/dist/filepond.min.css';
     import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+    import { ballots } from "../stores/ballots";
 
     registerPlugin(FilePondPluginImagePreview, FilePondPluginImageResize, FilePondPluginImageCrop, FilePondPluginImageTransform, FilePondPluginImageValidateSize, FilePondPluginImageExifOrientation, FilePondPluginFileValidateType);
 
@@ -90,6 +91,20 @@
     };
 
     const deleteCandidate = (uid: string) => {
+
+        // Go through each ballots andif the candidate is in the ballot, stop the deletion
+        for (const ballotUID in $ballots) {
+            const ballot = $ballots[ballotUID];
+            if (ballot.votes && Object.keys(ballot.votes).includes(uid)) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    html: `Candidate is in the ballot <b>${ballot.position_name}</b>. Please remove the candidate from the ballot first.`,
+                });
+                return;
+            }
+        }
+        
 
         Swal.fire({
             title: 'Are you sure?',
