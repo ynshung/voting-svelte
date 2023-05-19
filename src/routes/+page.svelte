@@ -40,41 +40,59 @@
     });
 
     const voteCandidate = (candidate: string) => {
-        const vote = httpsCallable(functions, "voteCandidate");
-        vote({ballot: $currentBallot?.id, candidate: candidate})
-            .then((result) => {
-                Swal.fire({
-                    icon: "success",
-                    title: "Success!",
-                    text: `You have voted for ${$candidates[candidate].name}!`,
-                });
-            })
-            .catch((error) => {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: `${error.message}`,
-                });
-            });
-            
+
+        // Confirm with user, show the current position and the candidate's name and image
+        Swal.fire({
+            icon: "question",
+            title: "Are you sure?",
+            html: `You are voting for <b>${$candidates[candidate].name}</b> for <b>${$currentBallot?.position_name}</b>.`,
+            showCancelButton: true,
+            confirmButtonText: "Yes, vote!",
+            cancelButtonText: "No, cancel!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const vote = httpsCallable(functions, "voteCandidate");
+                vote({ballot: $currentBallot?.id, candidate: candidate})
+                    .then((result) => {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Success!",
+                            text: `You have voted for ${$candidates[candidate].name}!`,
+                        });
+                    })
+                    .catch((error) => {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: `${error.message}`,
+                        });
+                    });
+            }
+        });     
     }
 </script>
 
 {#if loggedIn}
     <div class="flex flex-col items-center gap-4 mx-8">
-        <h1 class="text-2xl font-bold">USM CS Society AGM 2023</h1>
+        <h1 class="text-3xl font-bold">USM CS Society AGM 2023</h1>
         {#if enteredInfo}
             {#if $currentBallot}
                 {@const voted = $currentBallot.id in votedRecord}
-                <br/>
-                {#if voted}
-                    <div class="alert alert-success shadow-lg w-96 mb-4">
-                        <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        <span>You have already voted!</span>
+                <div class="alert alert-info shadow-lg w-min mt-6 mb-4 {voted ? 'alert-success' : 'alert-info'}">
+                    <div>
+                        {#if voted}
+                            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        {:else}
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        {/if}
+                        <div class="ml-1">
+                            <p class="whitespace-nowrap mr-16 text-lg">Current Position: <span class="font-bold">{$currentBallot.position_name}</span></p>
+                            {#if voted}
+                                <p class="text-sm">You have already voted!</p>
+                            {/if}
                         </div>
                     </div>
-                {/if}
+                </div>
                 <div class="flex flex-wrap items-end gap-16 justify-center mx-8">
                     {#each $currentBallot.candidates as candidate}
                         <div class="flex flex-col gap-4">
@@ -91,7 +109,6 @@
                         </div>
                     {/each}
                 </div>
-                <h1 class="text-2xl font-bold mt-6">Current Position: {$currentBallot.position_name}</h1>
             {:else}
                 <br/>
                 <p>No ballot ongoing.</p>

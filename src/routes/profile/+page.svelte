@@ -72,10 +72,10 @@
 </script>
 
 <div>
-    <div class="flex flex-row gap-4 align-middle">
-        <a href="/">
+    <div class="flex flex-row gap-3 align-middle">
+        <a href="/" class="w-8 h-8 rounded-full hover:bg-white hover:bg-opacity-10 transition">
             <svg
-                class="w-4 h-8 fill-current"
+                class="mx-auto w-4 h-8 fill-current"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 320 512"
                 ><path

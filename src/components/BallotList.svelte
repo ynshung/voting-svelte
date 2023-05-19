@@ -203,38 +203,74 @@
         if ($currentBallot) {
             // If the selected ballot is the same as the current ballot
             if ($currentBallot.id === selectedBallot) {
-                // Stop the active ballot
-                remove(currentBallotRef).catch((error) => {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: `Error while stopping ballot: ${error.message}`,
-                    });
+                Swal.fire({
+                    title: "Stop Ballot",
+                    html: `
+                        <p>Are you sure you want to stop the ballot of<br/><b>${$ballots[selectedBallot].position_name}</b>?</p>
+                    `,
+                    confirmButtonText: "Stop",
+                    focusConfirm: false,
+                    showCancelButton: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        remove(currentBallotRef).catch((error) => {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: `Error while stopping ballot: ${error.message}`,
+                            });
+                        });
+                    }
                 });
             } else {
+                // If the selected ballot is not the same as the current ballot
                 Swal.fire({
-                    icon: "error",
-                    title: "Ongoing Ballot",
-                    text: `Please stop the current ballot first.`,
-                    confirmButtonText: "OK",
+                    title: "Start Ballot",
+                    html: `
+                        <p>Are you sure you want to start the ballot of<br/><b>${$ballots[selectedBallot].position_name}</b>?</p>
+                        <br/>
+                        <p>This will stop the ballot of<br/><b>${$currentBallot.position_name}</b>.</p>
+                    `,
+                    confirmButtonText: "Stop and Start",
                     focusConfirm: false,
+                    showCancelButton: true,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        selectedBallotToActive();
+                    }
                 });
             }
         } else {
-            // Start the selected ballot
-            set(currentBallotRef, {
-                id: selectedBallot,
-                position_name: $ballots[selectedBallot].position_name,
-                candidates: Object.keys($ballots[selectedBallot].votes),
-            }).catch((error) => {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: `Error while starting ballot: ${error.message}`,
-                });
+            Swal.fire({
+                title: "Start Ballot",
+                html: `
+                    <p>Are you sure you want to start the ballot of<br/><b>${$ballots[selectedBallot].position_name}</b>?</p>
+                `,
+                confirmButtonText: "Start",
+                focusConfirm: false,
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    selectedBallotToActive();
+                }
             });
         }
     };
+
+    const selectedBallotToActive = () => {
+        const currentBallotRef = ref(db, `ballots/current`);
+        set(currentBallotRef, {
+            id: selectedBallot,
+            position_name: $ballots[selectedBallot].position_name,
+            candidates: Object.keys($ballots[selectedBallot].votes),
+        }).catch((error) => {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: `Error while starting ballot: ${error.message}`,
+            });
+        });
+    }
 
     onMount(() => {
         const cancel = onValue(ref(db, `ballots/current`), (snapshot) => {
