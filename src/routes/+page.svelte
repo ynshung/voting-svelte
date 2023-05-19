@@ -62,11 +62,16 @@
 
 {#if loggedIn}
     <div class="flex flex-col items-center gap-4 mx-8">
-        <h1 class="text-2xl font-bold">USM CS Society AGM 2023</h1>
+        <h1 class="text-3xl font-bold">USM CS Society AGM 2023</h1>
         {#if enteredInfo}
             {#if $currentBallot}
                 {@const voted = $currentBallot.id in votedRecord}
-                <br/>
+                <div class="alert alert-info shadow-lg w-min mt-6 mb-4">
+                    <div>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                      <p class="whitespace-nowrap mr-16 text-lg">Current Position: <span class="font-bold">{$currentBallot.position_name}</span></p>
+                    </div>
+                </div>
                 {#if voted}
                     <div class="alert alert-success shadow-lg w-96 mb-4">
                         <div>
@@ -91,7 +96,6 @@
                         </div>
                     {/each}
                 </div>
-                <h1 class="text-2xl font-bold mt-6">Current Position: {$currentBallot.position_name}</h1>
             {:else}
                 <br/>
                 <p>No ballot ongoing.</p>
