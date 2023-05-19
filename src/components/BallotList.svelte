@@ -173,7 +173,7 @@
             title: "Reset Ballot",
             html: `
                 <p>Are you sure you want to reset this ballot?</p>
-                <p>This will set all votes to zero.</p>
+                <p>This will set all votes to zero but does not reset the voter's vote.</p>
             `,
             confirmButtonText: "Reset",
             focusConfirm: false,
@@ -338,9 +338,9 @@
             {#if ballotUID !== "current"}
                 {@const ballot = $ballots[ballotUID]}
                 {@const selected = ballotUID === selectedBallot}
-                <a href={null} on:click={() => selectedBallot = ballotUID} class="flex flex-row gap-2 items-center border-current border rounded-lg px-4 py-2 cursor-pointer" class:bg-slate-50={selected} class:text-gray-950={selected}>
+                <a href={null} on:click={() => selectedBallot = ballotUID} class="flex flex-row gap-2 items-center border-current border rounded-lg px-4 py-2 cursor-pointer {selected ? 'text-slate-50 bg-gray-950 dark:text-gray-950 dark:bg-slate-50' : ''}">
                     {#if $currentBallot && ballotUID === $currentBallot.id}
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-5 h-5 animate-spin {selected ? 'fill-gray-950': 'fill-white'}"><path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-5 h-5 animate-spin {selected ? 'fill-white dark:fill-gray-950': 'dark:fill-white'}"><path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"/></svg>
                     {/if}
                     <p class="text-lg">{ballot.position_name}</p>
                 </a>
