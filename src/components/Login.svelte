@@ -62,7 +62,7 @@
             <div class="form-control">
                 <div class="input-group">
                     <input type="email" id="email" placeholder="USM Email" class="form-control input input-bordered w-60" required />
-                    <input type="password" id="password" placeholder="Password" class="form-control input input-bordered w-60" class:hidden={!loginWithPassword} required />
+                    <input type="password" id="password" placeholder="Password" class="form-control input input-bordered w-60" class:hidden={!loginWithPassword} />
                     <input type="submit" value="Login" class="btn btn-primary" />
                 </div>
             </div>
