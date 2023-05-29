@@ -1,33 +1,58 @@
 <script lang="ts">
     import { sendSignInLinkToEmail, signInWithEmailAndPassword } from "firebase/auth";
-    import { auth } from "../firebase";
+    import { auth, functions } from "../firebase";
     import Swal from 'sweetalert2'
     import { onMount } from "svelte";
+    import { httpsCallable } from "firebase/functions";
 
+    let loading = false;
     let loginWithPassword = false;
 
     function login(event: SubmitEvent) {
+        loading = true;
         const input = event.target as HTMLFormElement;
         const email = input.email.value;
 
         if (!loginWithPassword) {
-            sendSignInLinkToEmail(auth, email, {
-                url: window.location.href + "verify",
-                handleCodeInApp: true
-            }).then(() => {
-                window.localStorage.setItem("emailForSignIn", email);
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Email sent',
-                    text: 'Check your email for the login link. Make sure to check your spam folder as well!',
-                });
+            const checkAuthorized = httpsCallable(functions, "checkAuthorized");
+            checkAuthorized({email: email}).then((result) => {
+                if (result.data) {
+                    sendSignInLinkToEmail(auth, email, {
+                        url: window.location.href + "verify",
+                        handleCodeInApp: true
+                    }).then(() => {
+                        window.localStorage.setItem("emailForSignIn", email);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Email sent',
+                            text: 'Check your email for the login link. Make sure to check your spam folder as well!',
+                        });
+                    }).catch((error) => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: error,
+                        });
+                    }).finally(() => {
+                        loading = false;
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        html: `You are not authorized to enter the platform. Please use your USM email address.<br/>Contact us if you think this is a mistake.`,
+                    });
+                    loading = false;
+                }
             }).catch((error) => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
                     text: error,
                 });
+                    loading = false;
             });
+
         } else {
             const password = input.password.value;
             signInWithEmailAndPassword(auth, email, password).then(() => {
@@ -63,7 +88,7 @@
                 <div class="input-group">
                     <input type="email" id="email" placeholder="USM Email" class="form-control input input-bordered w-60" required />
                     <input type="password" id="password" placeholder="Password" class="form-control input input-bordered w-60" class:hidden={!loginWithPassword} />
-                    <input type="submit" value="Login" class="btn btn-primary" />
+                    <input type="submit" value="Login" class="btn btn-primary" disabled={loading} />
                 </div>
             </div>
         </form>

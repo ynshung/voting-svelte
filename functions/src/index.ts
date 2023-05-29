@@ -24,21 +24,38 @@ const db = getDatabase(app);
 setGlobalOptions({ region: "asia-northeast1", maxInstances: 10, concurrency: 200});
 
 const AUTHROIZED_LIST = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTVd9kwDS48x2KjhbYnNtQtPZErbQivJhGTElxKEhWp3M6KJ0bEv-H-r6Oa5FRnDZZg8xU3uvFYjIq3/pub?output=csv";
+
+const checkEmail = async (email: string) => {
+    if (!email.includes('usm.my')) {
+        return false;
+    }
+    
+    const response = await fetch(AUTHROIZED_LIST);
+    const text = await response.text();
+    return text.includes(email);
+};
+
 export const blockUnauthorized = beforeUserCreated((event) => {
     const user = event.data;  
-    
-    if (!user.email?.includes('usm.my')) {
-        throw new HttpsError('permission-denied', "Unauthorized email");
-    }
 
-    fetch(AUTHROIZED_LIST).then((response) => {
-        response.text().then((text) => {
-            if (user.email && text.includes(user.email)) {
-                return;
-            } else {
-                throw new HttpsError('permission-denied', "Unauthorized email");
-            }
-        });
+    if (user.email) {
+      checkEmail(user.email).then((result) => {
+        if (!result) {
+          throw new HttpsError('permission-denied', "Unauthorized email");
+        }
+      }).catch((error) => {
+        throw new HttpsError('internal', `Error occurred: ${error}`);
+      });
+    }
+});
+
+export const checkAuthorized = onCall(async (request) => {
+    const email: string = request.data.email;
+    
+    return checkEmail(email).then((result) => {
+      return result;
+    }).catch((error) => {
+      throw new HttpsError('internal', `Error occurred: ${error}`);
     });
 });
 
