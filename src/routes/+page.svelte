@@ -156,6 +156,7 @@
                 </a>
             {/if}
         </div>
+        <p class="text-xs text-center">If you face any issue, you may fill in <a href="https://docs.google.com/forms/d/e/1FAIpQLSeWjbCJUjk_FwGh_JdltA2mQX_2d4XTVpapu59AmKqefAFyOg/viewform?usp=sf_link" target="_blank" class="link hover:text-primary-content transition">this form</a>.</p>
     </div>
 {:else}
     <Login />
