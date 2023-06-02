@@ -40,7 +40,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        html: `You are not authorized to enter the platform. Please use your USM email address.<br/>Contact us if you think this is a mistake.`,
+                        html: `You are not authorized to enter the platform. Please use your USM email address.<br/><a href="https://docs.google.com/forms/d/e/1FAIpQLSeWjbCJUjk_FwGh_JdltA2mQX_2d4XTVpapu59AmKqefAFyOg/viewform?usp=sf_link" target="_blank" class="link hover:text-primary-content transition">Contact us</a> if you think this is a mistake.`,
                     });
                     loading = false;
                 }
