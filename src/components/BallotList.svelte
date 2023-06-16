@@ -143,6 +143,16 @@
     };
 
     const removeBallot = () => {
+        // Check if ballot is active
+        if ($currentBallot && $currentBallot.id === selectedBallot) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: `You cannot remove an active ballot.`,
+            });
+            return;
+        }
+
         Swal.fire({
             title: "Remove Ballot",
             html: `
