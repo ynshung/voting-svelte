@@ -15,6 +15,8 @@ import { initializeApp } from 'firebase-admin/app';
 import { getDatabase } from "firebase-admin/database";
 import { setGlobalOptions } from "firebase-functions/v2/options";
 
+// import { yearTwoCom } from "./yearTwoCom";
+
 const app = initializeApp();
 const db = getDatabase(app);
 
@@ -64,6 +66,10 @@ export const voteCandidate = onCall(async (request) => {
       if (!request.auth) {
         throw new HttpsError('unauthenticated', 'Unauthenticated');
       }
+
+      // if (request.auth.token.email && yearTwoCom.includes(request.auth.token.email)) {
+      //   throw new HttpsError('permission-denied', 'Year 2 committees are not allowed to vote.');
+      // }
   
       const uid = request.auth.uid;
       const ballot: string = request.data.ballot;
