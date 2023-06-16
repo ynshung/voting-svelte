@@ -156,7 +156,10 @@
                 </a>
             {/if}
         </div>
-        <p class="text-xs text-center">If you face any issue, you may fill in <a href="https://docs.google.com/forms/d/e/1FAIpQLSeWjbCJUjk_FwGh_JdltA2mQX_2d4XTVpapu59AmKqefAFyOg/viewform?usp=sf_link" target="_blank" class="link hover:text-primary-content transition">this form</a>.</p>
+            <div>
+                <p class="text-xs text-center mb-1">If you face any issue, you may fill in <a href="https://docs.google.com/forms/d/e/1FAIpQLSeWjbCJUjk_FwGh_JdltA2mQX_2d4XTVpapu59AmKqefAFyOg/viewform?usp=sf_link" target="_blank" class="link hover:text-primary-content transition">this form</a>.</p>
+                <p class="text-xs text-center">© 2023 <a href="https://cssocietyusm.com" class="link hover:text-primary-content transition">Computer Science Society</a>, Universiti Sains Malaysia</p>    
+            </div>
     </div>
 {:else}
     <Login />
