@@ -199,6 +199,16 @@
 
     const toggleActive = () => {
         const currentBallotRef = ref(db, `ballots/current`);
+        
+        // Check if there is any candidate in the ballot
+        if (!$ballots[selectedBallot].votes) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: `There are no candidates in this ballot.`,
+            });
+            return;
+        }
 
         if ($currentBallot) {
             // If the selected ballot is the same as the current ballot
