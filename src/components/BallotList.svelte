@@ -155,9 +155,8 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 const ballotRef = ref(db, `ballots/${selectedBallot}`);
-                remove(ballotRef).then(() => {
                     selectedBallot = "";
-                }).catch((error) => {
+                remove(ballotRef).catch((error) => {
                     Swal.fire({
                         icon: "error",
                         title: "Oops...",
