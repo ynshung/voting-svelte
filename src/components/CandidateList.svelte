@@ -38,26 +38,59 @@
         const newCandidateRef = push(candidateRef);
 
         // @ts-ignore
-        const fileName = pond.getFile().file.name;
+        const fileName: string = pond.getFile().file.name;
         const imgRef = storageRef(storage, `candidates/${newCandidateRef.key}-${fileName}`);
+
+        const candidateName = formData.get("name") as string;
+        const existingCandidateUID = Object.keys($candidates).find((uid) => $candidates[uid].name === candidateName);
 
         uploadBytes(imgRef, processedImg).then((snapshot) => {
             getDownloadURL(imgRef).then((url) => {
-                set(newCandidateRef, {
-                    name: formData.get("name") as string,
-                    image: url,
-                    imageRef: imgRef.fullPath,
-                }).then(() => {
-                    // @ts-ignore
-                    pond.removeFile();
-                    cName = "";
-                }).catch((error) => {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: `Error while adding candidate: ${error.message}`,
+                if (existingCandidateUID) {
+                    const existingCandidate = $candidates[existingCandidateUID];
+                    const existingImgRef = storageRef(storage, existingCandidate.imageRef);
+                    deleteObject(existingImgRef)
+                    .then(() => {
+                        update(ref(db, `candidates/${existingCandidateUID}`), {
+                            image: url,
+                            imageRef: imgRef.fullPath,
+                        }).then(() => {
+                            // @ts-ignore
+                            pond.removeFile();
+                            cName = "";
+                        }).catch((error) => {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: `Error while updating candidate: ${error.message}`,
+                            });
+                        });
+                    })
+                    .catch((error) => {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: `Error while deleting image: ${error.message}`,
+                        });
                     });
-                });
+                } else {
+                    set(newCandidateRef, {
+                        name: candidateName,
+                        image: url,
+                        imageRef: imgRef.fullPath,
+                    }).then(() => {
+                        // @ts-ignore
+                        pond.removeFile();
+                        cName = "";
+                    }).catch((error) => {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: `Error while adding candidate: ${error.message}`,
+                        });
+                    });
+                }
+
             }).catch((error) => {
                 Swal.fire({
                     icon: "error",
