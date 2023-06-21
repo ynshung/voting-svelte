@@ -7,12 +7,18 @@
     import { currentBallot } from "../stores/currentBallot";
     import { candidates } from "../stores/candidates";
     import { httpsCallable } from "firebase/functions";
+    import { onMount } from "svelte";
 
     let loggedIn = false;
     let enteredInfo = false;
     let isAdmin = false;
 
     let votedRecord: Record<string, boolean> = {};
+    let message = "";
+
+    onValue(child(ref(db), "message"), (snapshot) => {
+        message = snapshot.val();
+    });
 
     onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -115,7 +121,7 @@
                 </div>
             {:else}
                 <br/>
-                <p>No ballot ongoing.</p>
+                <div class="text-center">{@html message}</div>
             {/if}
 
         {:else}
