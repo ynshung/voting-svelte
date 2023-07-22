@@ -143,6 +143,16 @@
     };
 
     const removeBallot = () => {
+        // Check if ballot is active
+        if ($currentBallot && $currentBallot.id === selectedBallot) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: `You cannot remove an active ballot.`,
+            });
+            return;
+        }
+
         Swal.fire({
             title: "Remove Ballot",
             html: `
@@ -155,9 +165,8 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 const ballotRef = ref(db, `ballots/${selectedBallot}`);
-                remove(ballotRef).then(() => {
                     selectedBallot = "";
-                }).catch((error) => {
+                remove(ballotRef).catch((error) => {
                     Swal.fire({
                         icon: "error",
                         title: "Oops...",
@@ -199,6 +208,16 @@
 
     const toggleActive = () => {
         const currentBallotRef = ref(db, `ballots/current`);
+        
+        // Check if there is any candidate in the ballot
+        if (!$ballots[selectedBallot].votes) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: `There are no candidates in this ballot.`,
+            });
+            return;
+        }
 
         if ($currentBallot) {
             // If the selected ballot is the same as the current ballot
