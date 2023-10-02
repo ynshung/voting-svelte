@@ -22,7 +22,7 @@ const app = initializeApp(firebaseConfig);
 
 export const db = getDatabase(app);
 export const auth = getAuth(app);
-export const functions = getFunctions(app, "asia-northeast1");
+export const functions = getFunctions(app);
 // connectFunctionsEmulator(functions, "localhost", 5001);
 export const storage = getStorage(app);
 

@@ -29,7 +29,7 @@
                         Swal.fire({
                             icon: "error",
                             title: "Oops...",
-                            text: "You are not authorized to enter the platform. Please use your USM email address.",
+                            text: "You are not authorized to enter the platform. Please use a valid email address.",
                         }).then(() => {
                             window.location.href = "/";
                         });

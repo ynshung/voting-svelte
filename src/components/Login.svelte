@@ -40,7 +40,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
-                        html: `You are not authorized to enter the platform. Please use your USM email address.<br/><a href="https://docs.google.com/forms/d/e/1FAIpQLSeWjbCJUjk_FwGh_JdltA2mQX_2d4XTVpapu59AmKqefAFyOg/viewform?usp=sf_link" target="_blank" class="link hover:text-primary-content transition">Contact us</a> if you think this is a mistake.`,
+                        html: `You are not authorized to enter the platform. Please use a valid email address.`,
                     });
                     loading = false;
                 }
@@ -86,15 +86,15 @@
         <form class="input-group flex justify-center" on:submit|preventDefault={login}>
             <div class="form-control">
                 <div class="input-group">
-                    <input type="email" id="email" placeholder="USM Email" class="form-control input input-bordered w-60" required />
+                    <input type="email" id="email" placeholder="Email" class="form-control input input-bordered w-60" required />
                     <input type="password" id="password" placeholder="Password" class="form-control input input-bordered w-60" class:hidden={!loginWithPassword} />
                     <input type="submit" value="Login" class="btn btn-primary" disabled={loading} />
                 </div>
             </div>
         </form>
         <div>
-            <p class="text-xs text-center mb-1">Only USM CS undergraduates are allowed to enter the voting platform.</p>
-            <p class="text-xs text-center">If you face any issue, you may fill in <a href="https://docs.google.com/forms/d/e/1FAIpQLSeWjbCJUjk_FwGh_JdltA2mQX_2d4XTVpapu59AmKqefAFyOg/viewform?usp=sf_link" target="_blank" class="link hover:text-primary-content transition">this form</a>.</p>
+            <p class="text-xs text-center mb-1">Only authorized user are allowed to enter the voting platform.</p>
+            <p class="text-xs text-center">If you face any issue, you may fill in <a href="https://example.com" target="_blank" class="link hover:text-primary-content transition">this form</a>.</p>
         </div>
     </div>
 </div>

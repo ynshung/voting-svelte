@@ -84,7 +84,7 @@
 
 {#if loggedIn}
     <div class="flex flex-col items-center gap-4 mx-8">
-        <h1 class="text-3xl font-bold">USM CS Society AGM 2023</h1>
+        <h1 class="text-3xl font-bold">Svelte Voting Platform</h1>
         {#if enteredInfo}
             {#if $currentBallot}
                 {@const voted = $currentBallot.id in votedRecord}
@@ -163,8 +163,8 @@
             {/if}
         </div>
             <div>
-                <p class="text-xs text-center mb-1">If you face any issue, you may fill in <a href="https://docs.google.com/forms/d/e/1FAIpQLSeWjbCJUjk_FwGh_JdltA2mQX_2d4XTVpapu59AmKqefAFyOg/viewform?usp=sf_link" target="_blank" class="link hover:text-primary-content transition">this form</a>.</p>
-                <p class="text-xs text-center">© 2023 <a href="https://cssocietyusm.com" class="link hover:text-primary-content transition">Computer Science Society</a>, Universiti Sains Malaysia</p>    
+                <p class="text-xs text-center mb-1">This is a footer, you may add any text or <a href="https://example.com" target="_blank" class="link hover:text-primary-content transition">link</a> here.</p>
+                <p class="text-xs text-center">© 2023 <a href="https://example.com" class="link hover:text-primary-content transition">Example Corporation</a></p>    
             </div>
     </div>
 {:else}

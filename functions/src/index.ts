@@ -15,8 +15,6 @@ import { initializeApp } from 'firebase-admin/app';
 import { getDatabase } from "firebase-admin/database";
 import { setGlobalOptions } from "firebase-functions/v2/options";
 
-// import { yearTwoCom } from "./yearTwoCom";
-
 const app = initializeApp();
 const db = getDatabase(app);
 
@@ -25,12 +23,12 @@ const db = getDatabase(app);
 
 setGlobalOptions({ region: "asia-northeast1", maxInstances: 10, concurrency: 200});
 
-const AUTHROIZED_LIST = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTVd9kwDS48x2KjhbYnNtQtPZErbQivJhGTElxKEhWp3M6KJ0bEv-H-r6Oa5FRnDZZg8xU3uvFYjIq3/pub?output=csv";
+const AUTHROIZED_LIST = "https://docs.google.com/spreadsheets/d/e/GSHEET_ID/pub?output=csv";
 
 const checkEmail = async (email: string) => {
-    if (!email.includes('usm.my')) {
-        return false;
-    }
+    // if (!email.includes('@authorized-domain.com')) {
+    //     return false;
+    // }
     
     const response = await fetch(AUTHROIZED_LIST);
     const text = await response.text();
@@ -66,10 +64,6 @@ export const voteCandidate = onCall(async (request) => {
       if (!request.auth) {
         throw new HttpsError('unauthenticated', 'Unauthenticated');
       }
-
-      // if (request.auth.token.email && yearTwoCom.includes(request.auth.token.email)) {
-      //   throw new HttpsError('permission-denied', 'Year 2 committees are not allowed to vote.');
-      // }
   
       const uid = request.auth.uid;
       const ballot: string = request.data.ballot;

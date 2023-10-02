@@ -7,8 +7,8 @@
 
     let email = "";
     let name = "";
-    let year: string = "0";
-    let matric: number;
+    let selection: string = "0";
+    let no: number;
 
     onMount(() => {
         onAuthStateChanged(auth, (user) => {
@@ -21,8 +21,8 @@
                 .then((snapshot) => {
                     if (snapshot.exists()) {
                         name = snapshot.val().name;
-                        year = snapshot.val().year.toString();
-                        matric = snapshot.val().matric;
+                        selection = snapshot.val().selection.toString();
+                        no = snapshot.val().no;
                     } else {
                         console.log("No data available");
                     }
@@ -37,8 +37,8 @@
         set(ref(db, `voters/${auth.currentUser?.uid}`), {
             email: email,
             name: name,
-            year: parseInt(year.toString()),
-            matric: matric,
+            selection: parseInt(selection.toString()),
+            no: no,
         })
             .then(() => {
                 Swal.fire({
@@ -114,13 +114,13 @@
             </div>
     
             <div class="mb-4">
-                <label for="year">Year</label>
+                <label for="selection">Selection</label>
                 <select
-                    id="year"
-                    name="year"
+                    id="selection"
+                    name="selection"
                     class="input input-bordered mt-1 block w-full"
                     required
-                    bind:value={year}
+                    bind:value={selection}
                 >
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -131,14 +131,14 @@
             </div>
     
             <div class="mb-4">
-                <label for="matric">Matric Number</label>
+                <label for="no">No</label>
                 <input
                     type="number"
-                    id="matric"
-                    name="matric"
+                    id="no"
+                    name="no"
                     class="input input-bordered mt-1 block w-full"
                     required
-                    bind:value={matric}
+                    bind:value={no}
                 />
             </div>
     
