@@ -21,7 +21,7 @@ const db = getDatabase(app);
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
 
-setGlobalOptions({ region: "asia-northeast1", maxInstances: 10, concurrency: 200});
+setGlobalOptions({ region: "us-central1", maxInstances: 10, concurrency: 200 });
 
 const AUTHORIZED_LIST = "https://docs.google.com/spreadsheets/d/e/GSHEET_ID/pub?output=csv";
 

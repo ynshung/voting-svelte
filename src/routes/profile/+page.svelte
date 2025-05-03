@@ -35,6 +35,7 @@
 
     const editProfile = () => {
         set(ref(db, `voters/${auth.currentUser?.uid}`), {
+            // Add other fields as necessary
             email: email,
             name: name,
             selection: parseInt(selection.toString()),
@@ -131,7 +132,7 @@
             </div>
     
             <div class="mb-4">
-                <label for="no">No</label>
+                <label for="no">Number</label>
                 <input
                     type="number"
                     id="no"

@@ -164,7 +164,7 @@
         </div>
             <div>
                 <p class="text-xs text-center mb-1">This is a footer, you may add any text or <a href="https://example.com" target="_blank" class="link hover:text-primary-content transition">link</a> here.</p>
-                <p class="text-xs text-center">© 2023 <a href="https://example.com" class="link hover:text-primary-content transition">Example Corporation</a></p>    
+                <p class="text-xs text-center">Open-source voting platform by <a class="link hover:text-primary-content transition" href="https://github.com/ynshung/voting-svelte" target="_blank">@ynshung</a></p>
             </div>
     </div>
 {:else}
