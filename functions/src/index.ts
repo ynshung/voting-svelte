@@ -23,14 +23,14 @@ const db = getDatabase(app);
 
 setGlobalOptions({ region: "asia-northeast1", maxInstances: 10, concurrency: 200});
 
-const AUTHROIZED_LIST = "https://docs.google.com/spreadsheets/d/e/GSHEET_ID/pub?output=csv";
+const AUTHORIZED_LIST = "https://docs.google.com/spreadsheets/d/e/GSHEET_ID/pub?output=csv";
 
 const checkEmail = async (email: string) => {
     // if (!email.includes('@authorized-domain.com')) {
     //     return false;
     // }
     
-    const response = await fetch(AUTHROIZED_LIST);
+    const response = await fetch(AUTHORIZED_LIST);
     const text = await response.text();
     return text.includes(email);
 };
