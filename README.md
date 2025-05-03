@@ -5,10 +5,18 @@ A voting platform built with Svelte 3.
 ![Main Page](docs/main-page.png)
 
 ## Features
-* Dynamic Voting System: Easily create and manage polls and votes
-* Real-Time Updates: Instant feedback and live updates
+* Dynamic Voting System: Admin can easily create and manage polls and votes
+* Real-Time Updates: Instant feedback and live updates from voters
+* Anonymous Voting: The votes cast are not stored in the database, only the counts
 * Intuitive User Interface: Minimal and user-friendly design
 * Backup Password Login (Add `?password` to the URL)
+
+### General Flow
+1. Voter input with their email address in the input
+2. The app will check if the email address is in the authorized email list
+3. A login link will be sent to their inbox
+4. Once the user logged in, they will be prompted to complete their profile
+5. The ballot will be displayed to the user when the admin choose to show it
 
 > [!WARNING]
 > This project is using an older version of Svelte and are not fully tested in the current state.
